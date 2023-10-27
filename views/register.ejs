@@ -1,0 +1,26 @@
+<%- include('./layouts/header') %>
+
+<form action="/auth/Register" method="post">
+
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email_id" name="email_field" aria-describedby="emailHelp">
+      
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password_id1" name="password_field1">
+    </div>
+
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="password_id2" name="password_field2">
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <p> Already have an account <span> <a href="/auth/Login"> Login </a>  </span></p>
+
+<%- include('./layouts/footer') %>
