@@ -4,13 +4,18 @@ const morgan  = require('morgan')
 const mongoose  = require('mongoose')
 require ('dotenv').config()
 const bodyParser = require('body-parser')
+const sessionMiddleware = require('./models/server.model');
+
+
 
 
 //******************Initialization*************************
 const app = express()
 app.use(morgan('dev')); // to show us the logs 
 app.set('view engine', 'ejs');  // for view folder
-app.use(express.static('public')); //to load the public folder 
+app.use(express.static('public')); //to load the public folder
+app.use(sessionMiddleware);
+
 
 //*********************************************************
 
@@ -62,6 +67,7 @@ db.once( 'open', ()=>{
 app.listen(port , () => {
     console.log('app is running on ${port}')
 });
+
 
 
 

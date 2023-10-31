@@ -1,6 +1,8 @@
 const router = require('express').Router();
+const session = require('express-session');
 const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
+
 
 
 router.get('/Login', (req, res, next)=>{
@@ -25,10 +27,14 @@ router.post('/Login', (req, res, next)=>{
                const passwordMatch = await bcrypt.compare(password_field1, FetchEmailForLogin.password_field1);
               
                if (passwordMatch){
-                res.send('login sucessful ')
+                //console.log('login sucessful ')
+                req.session.isAuth = true;
+                
+                res.redirect('/user/Profile');
                }
                else
-               res.send('incorrect password ')
+               //console.log('incorrect password ')
+               res.redirect('/auth/Login');
               
            }
 
@@ -103,7 +109,15 @@ router.post('/Register', (req, res, next)=>{
 
 
 router.get('/Logout', async(req, res, next)=>{
-    res.send('Logout')
+    
+    
+  req.session.destroy(err => {
+    if (err) {
+      console.error(err);
+    }
+    res.redirect('/');
+  });
+    
 });
 
 module.exports = router;
