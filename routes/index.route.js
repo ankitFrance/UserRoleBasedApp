@@ -1,12 +1,8 @@
 const router = require('express').Router();
 
-
 router.get('/', (req, res, next)=>{
     res.render('index');
-     //
-    //console.log(req.session)
-    console.log(req.sessionID)  
-    
+    console.log(req.sessionID) 
 });
 
 module.exports = router;

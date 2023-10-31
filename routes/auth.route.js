@@ -4,7 +4,6 @@ const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
 
 
-
 router.get('/Login', (req, res, next)=>{
     res.render('login')   // file name login.ejs  is written as login (render is for file)
 });
@@ -29,17 +28,17 @@ router.post('/Login', (req, res, next)=>{
                if (passwordMatch){
                 //console.log('login sucessful ')
                 req.session.isAuth = true;
-                
-                res.redirect('/user/Profile');
+                return res.redirect('/user/Profile');
                }
-               else
-               //console.log('incorrect password ')
+               else {
+               console.log('incorrect password ')
                res.redirect('/auth/Login');
-              
+               }
            }
 
            else{
-           res.send('email not found ')
+           console.log('email not found ')
+           res.redirect('/auth/Login');
            }
         } 
     catch (error) 
@@ -109,7 +108,6 @@ router.post('/Register', (req, res, next)=>{
 
 
 router.get('/Logout', async(req, res, next)=>{
-    
     
   req.session.destroy(err => {
     if (err) {

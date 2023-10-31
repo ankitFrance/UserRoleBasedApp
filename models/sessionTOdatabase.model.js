@@ -1,7 +1,6 @@
-// to store session details to the mongoose database 
+// TO CREATE DATABASE AND COLLECTION IN MONGODB TO STORE SESSION DETAILS 
 
 const session = require('express-session');
-
 const mongoDBsession = require('connect-mongodb-session')(session)
 
 const storeSession = new mongoDBsession({

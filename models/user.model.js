@@ -21,8 +21,8 @@ userSchema.pre('save', async function (next){  //This code is a middleware funct
         this.password_field1 = hashedPassword
         }
         next();  //This is a callback function that tells Mongoose to move on to the next middleware in the sequence or proceed with the save operation.
-        
-    } catch (error) {
+    }  
+    catch (error) {
         console.log('some error occurred', error)
     }
 })

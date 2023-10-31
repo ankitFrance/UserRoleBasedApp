@@ -1,7 +1,6 @@
-// we made a session here
+// A SESSION IS CREATED IN THIS FILE 
 
-// session.js
-const storeSession = require('./sessionTOdatabase.model');   // to store session details to the mongoose database 
+const storeSession = require('./sessionTOdatabase.model'); //coming from different file   // to store session details to the mongoose database 
 const session = require('express-session');
 
 // Configure session middleware
@@ -10,7 +9,7 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: true,
   name: 'ankit session',
-  store: storeSession
+  store: storeSession   // coming from sessionTOdatabase.model
 });
 
 module.exports = sessionMiddleware;

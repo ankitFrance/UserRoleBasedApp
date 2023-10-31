@@ -15,25 +15,20 @@ app.use(morgan('dev')); // to show us the logs
 app.set('view engine', 'ejs');  // for view folder
 app.use(express.static('public')); //to load the public folder
 app.use(sessionMiddleware);
-
-
 //*********************************************************
 
-//********************Body parser*************************
 
+//********************Body parser*************************
 app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
 
 app.use(bodyParser.json())  // parse application/json
-
 //*********************************************************
 
 
 //************************Routing**************************
-
 app.use('/', require('./routes/index.route'))
 app.use('/auth', require('./routes/auth.route'))
 app.use('/user', require('./routes/user.route'))
-
 //*********************************************************
 
 // Handling errors 
@@ -51,8 +46,7 @@ app.use((error, req, res, next)=>{
 
 const port = process.env.PORT || 3080;
 
-//************************************database connection********************************
-
+//************************************Database connection********************************
 mongoose.connect("mongodb://127.0.0.1:27017/GestDeUtil", {useNewUrlParser: true});
 const db = mongoose.connection;
 db.on('error', ()=>{
@@ -62,17 +56,12 @@ db.on('error', ()=>{
 db.once( 'open', ()=>{
     console.log('connected sucessfully')
 });
-
+//************************************Database connection end********************************
 
 app.listen(port , () => {
     console.log('app is running on ${port}')
 });
 
-
-
-
-
-//************************************database connection********************************
 
 
 
