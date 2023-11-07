@@ -9,7 +9,8 @@ router.get('/Login', (req, res, next)=>{
 });
 
 router.get('/Register', (req, res, next)=>{
-    res.render('register')  // file name register.ejs  is written as register (render is for file)
+     
+  res.render('register', { ErrorEmailAlready: null}); // file name register.ejs  is written as register (render is for file)
 });
 
 router.post('/Login', (req, res, next)=>{
@@ -65,8 +66,8 @@ router.post('/Register', (req, res, next)=>{
 
                const doesExist = await User.findOne({email_field});
                if(doesExist){
-                 res.redirect('/auth/Register');
-                 console.log('record exist already')
+                 //res.redirect('/auth/Register');
+                 res.render('register', { ErrorEmailAlready: 'E-mail already exists.' });
                  return
                }
                //***********************END OF CHECK IF EMAIL ALREADY EXIST/******************************** */
@@ -75,7 +76,7 @@ router.post('/Register', (req, res, next)=>{
               
                else if (password_field1 !== password_field2) {
                  res.redirect('/auth/Register');
-                 console.log('Password and Confirm Password do not match.. Please try again');
+                 console.log('password and confirm passwords do not match') 
                  return
                } 
 

@@ -1,9 +1,16 @@
 <%- include('./layouts/header') %>
-
-<form action="/auth/Login" method="post">
+<div class="container">
+  <div class="row">
+    
     <div>
-      <h1 style="color: blueviolet;">LOGIN FORM</h1>
-    </div>
+     
+    <form action="/auth/Login" method="post" class="login-form">
+
+      <div>
+        <h1 style="color: #c6171b;" class="loginHeading"> LOGIN</h1>
+        <hr class="colored-hr">
+      </div>
+    
 
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -18,8 +25,12 @@
 
     
     
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  <p> Don't have an account <span> <a href="/auth/Register"> Register </a>  </span></p>
+    <button type="submit" class="btn btn-primary custom-btn">LOGIN</button>
+    <p class="spanText"> Don't have an account ? <span> <a href="/auth/Register"> Register </a>  </span></p>
+   </form>
+
+    </div>
+  </div>
+</div>
 
 <%- include('./layouts/footer') %>

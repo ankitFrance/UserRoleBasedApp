@@ -1,0 +1,40 @@
+.login-form , .RegisterForm{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  
+}
+
+.loginHeading , .RegisterHeading{
+  text-align: center;
+  margin-bottom: 5px; 
+}
+
+.spanText{
+  text-align: center;
+}
+
+.custom-btn {
+  width: 100%; 
+  margin-top: 15px; 
+  border-radius: 15px; 
+  
+}
+
+.colored-hr{
+ color: black;
+  
+}
+
+.custom-btn.btn-primary {
+  background-color: #c6171b; /* To change the color of a Bootstrap button with the btn btn-primary classes, overriding of  Bootstrap's default styles with your custom style */
+  border-color: #c6171b; 
+  color: #fff; 
+}
