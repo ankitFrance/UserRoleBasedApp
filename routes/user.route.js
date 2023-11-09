@@ -1,6 +1,6 @@
-const userModel = require('../models/user.model');
 
 const router = require('express').Router();
+
 
 
 const isAuth = (req, res, next)=>{
@@ -12,13 +12,11 @@ const isAuth = (req, res, next)=>{
   }
   }
 
-router.get('/Profile', isAuth , (req, res, next)=>{
-  //console.log(req.sessionID)
-   
-    res.render('profile')
-    
-    
-    
-});
+  router.get('/Profile', isAuth , (req, res, next)=>{
+    const user = req.session.FetchEmailForLogin;
+    console.log(req.sessionID)
+    res.render('profile', {user})
+      
+  });
 
 module.exports = router;

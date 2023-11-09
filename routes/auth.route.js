@@ -4,6 +4,7 @@ const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
 
 
+
 router.get('/Login', (req, res, next)=>{
     res.render('login')   // file name login.ejs  is written as login (render is for file)
 });
@@ -11,6 +12,7 @@ router.get('/Login', (req, res, next)=>{
 router.get('/Register', (req, res, next)=>{
   
     res.render('register'); // file name register.ejs  is written as register (render is for file)
+    
 });
 
 router.post('/Login', (req, res, next)=>{
@@ -21,6 +23,7 @@ router.post('/Login', (req, res, next)=>{
 
    async function LoginData(){
     const FetchEmailForLogin = await User.findOne({email_field});
+    
     try {
       
            if (FetchEmailForLogin) {
@@ -30,17 +33,27 @@ router.post('/Login', (req, res, next)=>{
                 //console.log('login sucessful ')
                 
                 req.session.isAuth = true;
-                return res.redirect('/user/Profile');
                 
+                req.session.FetchEmailForLogin = {     //req.session is an object used to store session info part of express-session middleware
+                  _id: FetchEmailForLogin._id,
+                  email: FetchEmailForLogin.email_field,
+                  // Add any other user details you want to store
+                };
+                
+                return res.redirect('/user/Profile');
+                //return res.render('profile', {IDuser: FetchEmailForLogin._id});
                }
+
                else {
                console.log('incorrect password ')
+               req.flash('error', 'incorrect password');
                res.redirect('/auth/Login');
                }
            }
 
            else{
            console.log('email not found ')
+           req.flash('error', 'Email not found');
            res.redirect('/auth/Login');
            }
         } 
@@ -81,7 +94,7 @@ router.post('/Register', (req, res, next)=>{
               
                else if (password_field1 !== password_field2) {
                  
-                 req.flash('success', 'Password and confirm password do not match');
+                 req.flash('error', 'Password and confirm password do not match');
                  res.redirect('/auth/Register');
                  console.log('password and confirm passwords do not match') 
                  return

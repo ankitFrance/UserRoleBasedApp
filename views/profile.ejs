@@ -3,6 +3,16 @@
 
 <button onclick="window.history.back()" type="submit" class="btn btn-primary">Back</button>
 
+<% if (user) { %>
+    <p>User ID: <%= user._id %></p>
+    <p>Email: <%= user.email %></p>
+    <!-- Add any other user details you want to display -->
+<% } else { %>
+    <p>User not found.</p>
+<% } %>
+
+
+
 
 
 <p>Welcome,</p>

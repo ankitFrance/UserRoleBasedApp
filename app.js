@@ -34,16 +34,22 @@ app.set('view engine', 'ejs');  // for view folder
 });
 
 //*********************************************************
-
-
-
-
+ // this is used to hide/show navbar links , i used the variable isLoggedIn in my navbar.ejs to hide/show links
+app.use(function(req, res, next){
+   
+   
+      res.locals.isLoggedIn = req.session.FetchEmailForLogin 
+                              // this "session.FetchEmailForLogin" holds if i am logged in or not, see in auth.route.js about this variable
+    next();
+  });
 
 //************************Routing**************************
 app.use('/', require('./routes/index.route'))
 app.use('/auth', require('./routes/auth.route'))
 app.use('/user', require('./routes/user.route'))
 //*********************************************************
+
+
 
 // Handling errors 
 app.use((req, res, next)=>{
