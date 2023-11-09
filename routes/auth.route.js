@@ -9,8 +9,8 @@ router.get('/Login', (req, res, next)=>{
 });
 
 router.get('/Register', (req, res, next)=>{
-     
-  res.render('register', { ErrorEmailAlready: null}); // file name register.ejs  is written as register (render is for file)
+  
+    res.render('register'); // file name register.ejs  is written as register (render is for file)
 });
 
 router.post('/Login', (req, res, next)=>{
@@ -28,8 +28,10 @@ router.post('/Login', (req, res, next)=>{
               
                if (passwordMatch){
                 //console.log('login sucessful ')
+                
                 req.session.isAuth = true;
                 return res.redirect('/user/Profile');
+                
                }
                else {
                console.log('incorrect password ')
@@ -66,8 +68,11 @@ router.post('/Register', (req, res, next)=>{
 
                const doesExist = await User.findOne({email_field});
                if(doesExist){
-                 //res.redirect('/auth/Register');
-                 res.render('register', { ErrorEmailAlready: 'E-mail already exists.' });
+                
+                req.flash('error', 'Email already exists');
+                 res.redirect('/auth/Register');
+                 console.log('email already exist')
+                 //res.render('register', { ErrorEmailAlready: 'E-mail already exists.' });
                  return
                }
                //***********************END OF CHECK IF EMAIL ALREADY EXIST/******************************** */
@@ -75,6 +80,8 @@ router.post('/Register', (req, res, next)=>{
                //********************SEE IF PASSWORD MATCHES OR NOT ******************************************/
               
                else if (password_field1 !== password_field2) {
+                 
+                 req.flash('success', 'Password and confirm password do not match');
                  res.redirect('/auth/Register');
                  console.log('password and confirm passwords do not match') 
                  return
@@ -91,8 +98,15 @@ router.post('/Register', (req, res, next)=>{
  
                // Save the instance to the database
                 const savedData = await user.save();
-                res.send(savedData)
+                req.flash('success', 'You have been registered');
+                //res.send(savedData)   // sending json mongodb to other page after register
                 console.log('Data saved successfully:', savedData);
+                
+                res.redirect('/auth/Register');
+               
+               
+                
+                
                }
             }
 
@@ -120,6 +134,8 @@ router.get('/Logout', async(req, res, next)=>{
 });
 
 module.exports = router;
+
+
 
 
 // ********************************************************************

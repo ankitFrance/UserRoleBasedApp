@@ -1,4 +1,7 @@
+const userModel = require('../models/user.model');
+
 const router = require('express').Router();
+
 
 const isAuth = (req, res, next)=>{
   if (req.session.isAuth){
@@ -10,8 +13,12 @@ const isAuth = (req, res, next)=>{
   }
 
 router.get('/Profile', isAuth , (req, res, next)=>{
-  console.log(req.sessionID)
+  //console.log(req.sessionID)
+   
     res.render('profile')
+    
+    
+    
 });
 
 module.exports = router;
