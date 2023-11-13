@@ -1,13 +1,21 @@
 const mongoose  = require('mongoose');
 const bcrypt = require('bcrypt');
 const schema = mongoose.Schema;
+const {roles} =  require('./constants');   // for making admin
 
 let userSchema = new schema({
     email_field : {
         type : String
     }, 
+
     password_field1 : {
         type : String
+    },
+
+    role : {
+        type : String,
+        enum : [roles.admin, roles.moderator, roles.client],
+        default : roles.client,
     }
 });
 //*******************************************BCRYPT***********************************
@@ -19,6 +27,9 @@ userSchema.pre('save', async function (next){  //This code is a middleware funct
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(this.password_field1, salt)
         this.password_field1 = hashedPassword
+        if (this.email_field===process.env.ADMIN_EMAIL.toLowerCase()){   //admin 
+            this.role = roles.admin
+        }
         }
         next();  //This is a callback function that tells Mongoose to move on to the next middleware in the sequence or proceed with the save operation.
     }  

@@ -11,13 +11,8 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-
           
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/admin/users">Manage users</a>
-          </li>
-
+         
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/auth/Register">Register</a>
           </li>
@@ -25,11 +20,23 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/auth/Login" >Login</a>
           </li>
+
+          <% } else if (isAuthWithAdminstrator) { %>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/admin/Allusers">Manage users</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/auth/Logout">Logout</a>
+            </li>
+
           <% } else { %> 
 
           <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/user/Profile">Profile</a>
           </li>
+
+         
   
 
           <li class="nav-item">

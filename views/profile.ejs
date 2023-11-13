@@ -3,24 +3,13 @@
 
 <button onclick="window.history.back()" type="submit" class="btn btn-primary">Back</button>
 
-<% if (user) { %>
-    <p>User ID: <%= user._id %></p>
+<% if (user) { %>   <!-- user is coming from auth.route.js file -->
+    <p>User ID: <%= user._id %></p> 
     <p>Email: <%= user.email %></p>
-    <!-- Add any other user details you want to display -->
+    <p>Role: <%= user.role %></p>
+    
 <% } else { %>
     <p>User not found.</p>
 <% } %>
-
-
-
-
-
-<p>Welcome,</p>
-
-<p>Email </p>
-
-<p>Role </p>
-
-<p>User Object </p>
 
 <%- include('./layouts/footer') %>

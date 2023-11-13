@@ -2,6 +2,7 @@ const router = require('express').Router();
 const session = require('express-session');
 const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
+const {roles} =  require('../models/constants'); 
 
 
 
@@ -37,9 +38,16 @@ router.post('/Login', (req, res, next)=>{
                 req.session.FetchEmailForLogin = {     //req.session is an object used to store session info part of express-session middleware
                   _id: FetchEmailForLogin._id,
                   email: FetchEmailForLogin.email_field,
+                  role: FetchEmailForLogin.role
                   // Add any other user details you want to store
                 };
-                
+                //0000000000000000000000000000000000000000000000000000000000000000000
+
+                if(FetchEmailForLogin.role === roles.admin){
+                  req.session.isAuthWithAdmin = true;
+                }
+
+                //0000000000000000000000000000000000000000000000000000000000000000000
                 return res.redirect('/user/Profile');
                 //return res.render('profile', {IDuser: FetchEmailForLogin._id});
                }
@@ -106,7 +114,9 @@ router.post('/Register', (req, res, next)=>{
                // Create an instance 'user' of the model 'User' that we imported in this file with the form data
                const user = new User({
                 email_field,        // this is coming from user.model.js 
-                password_field1     // this is coming from user.model.js 
+                password_field1,
+                roles   // this is coming from user.model.js 
+                
                 });
  
                // Save the instance to the database

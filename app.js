@@ -23,11 +23,8 @@ app.use(express.static('public')); //to load the public folder
 app.use(sessionMiddleware);
 app.use(flash());
 app.set('view engine', 'ejs');  // for view folder
-//app.use((req, res, next) => {
-   // res.locals.message = req.flash();
-    //next();
-  //});
-  app.use(function(req, res, next){
+
+app.use(function(req, res, next){
     res.locals.success = req.flash('success');
     res.locals.errors = req.flash('error');
     next();
@@ -36,20 +33,24 @@ app.set('view engine', 'ejs');  // for view folder
 //*********************************************************
  // this is used to hide/show navbar links , i used the variable isLoggedIn in my navbar.ejs to hide/show links
 app.use(function(req, res, next){
-   
-   
-      res.locals.isLoggedIn = req.session.FetchEmailForLogin 
+    res.locals.isLoggedIn = req.session.FetchEmailForLogin 
                               // this "session.FetchEmailForLogin" holds if i am logged in or not, see in auth.route.js about this variable
     next();
   });
+
+app.use(function(req, res, next){
+    res.locals.isAuthWithAdminstrator = req.session.isAuthWithAdmin
+                              
+    next();
+  });
+
 
 //************************Routing**************************
 app.use('/', require('./routes/index.route'))
 app.use('/auth', require('./routes/auth.route'))
 app.use('/user', require('./routes/user.route'))
+app.use('/admin',  require('./routes/admin.route'))
 //*********************************************************
-
-
 
 // Handling errors 
 app.use((req, res, next)=>{
@@ -83,7 +84,9 @@ app.listen(port , () => {
 });
 
 
+//---------------------------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------------------------
 
 
 /*
