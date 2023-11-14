@@ -7,7 +7,9 @@ const isAdmin = (req, res, next)=>{
       next()
     }
     else {
+      req.flash('error', 'Not Authorized');
       res.redirect('/');
+      
     }
     }
 
