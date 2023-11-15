@@ -1,24 +1,6 @@
 <%- include('./layouts/header') %>
 
-<% if (locals.errors && locals.errors.length > 0) { %>
-  <div class="alert alert-danger">
-    <ul>
-      <% locals.errors.forEach(function(error) { %>
-        <li><%= error %></li>
-      <% }); %>
-    </ul>
-  </div>
-<% } %>
 
-<% if (locals.success && locals.success.length > 0) { %>
-  <div class="alert alert-success">
-    <ul>
-      <% locals.success.forEach(function(success) { %>
-        <li><%= success %></li>
-      <% }); %>
-    </ul>
-  </div>
-<% } %>
 
 
 <div class="container">
@@ -32,6 +14,26 @@
         <h1 style="color: #c6171b;" class="loginHeading"> LOGIN</h1>
         <hr class="colored-hr">
       </div>
+
+      <% if (locals.errors && locals.errors.length > 0) { %>
+        <div class="alert alert-danger">
+    
+            <% locals.errors.forEach(function(error) { %>
+              <span><%= error %></span>
+            <% }); %>
+     
+        </div>
+      <% } %>
+      
+      <% if (locals.success && locals.success.length > 0) { %>
+        <div class="alert alert-success">
+        
+            <% locals.success.forEach(function(success) { %>
+              <span><%= success %></span>
+            <% }); %>
+       
+        </div>
+      <% } %>
     
 
     <div class="mb-3">
@@ -60,7 +62,15 @@
       <img src="/ORCIDiD.png" class="">
        Create or connect your ORCID iD
       </a>
+
+      <a href="google" class="icon-link">
+        <img src="/gmail.png" class="">
+         Login With Gmail
+        </a>
+     </form>
    </form>
+
+   
 
  
 

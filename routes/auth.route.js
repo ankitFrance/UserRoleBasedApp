@@ -3,11 +3,18 @@ const session = require('express-session');
 const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
 const {roles} =  require('../models/constants'); 
+const passport = require ('passport');
 
-
+router.get('/google', passport.authenticate('google',{
+    scope: ['profile']
+}))
 
 router.get('/Login', (req, res, next)=>{
     res.render('login')   // file name login.ejs  is written as login (render is for file)
+});
+
+router.get('/google/redirect',passport.authenticate('google'), (req, res, next)=>{
+  res.send('your profile')   
 });
 
 router.get('/Register', (req, res, next)=>{

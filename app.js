@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const sessionMiddleware = require('./models/server.model');
 //const flash = require('express-flash')
 const flash = require('connect-flash');
+const passportSetup = require('./models/passportSetup');
 
 
 
