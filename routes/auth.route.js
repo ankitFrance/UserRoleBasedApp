@@ -121,8 +121,9 @@ router.post('/Register', (req, res, next)=>{
                // Create an instance 'user' of the model 'User' that we imported in this file with the form data
                const user = new User({
                 email_field,        // this is coming from user.model.js 
-                password_field1,
-                roles   // this is coming from user.model.js 
+                password_field1,    // this is coming from user.model.js 
+                roles 
+                   
                 
                 });
  

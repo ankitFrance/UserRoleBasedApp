@@ -16,7 +16,16 @@ let userSchema = new schema({
         type : String,
         enum : [roles.admin, roles.moderator, roles.client],
         default : roles.client,
-    }
+    },
+
+    googleID : {
+        type : String
+    }, 
+
+    googleUsername : {
+        type : String
+    },
+    
 });
 //*******************************************BCRYPT***********************************
 
