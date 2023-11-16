@@ -9,7 +9,8 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: true,
   name: 'ankit session',
-  store: storeSession   // coming from sessionTOdatabase.model
+  store: storeSession ,  // coming from sessionTOdatabase.model
+  
 });
 
 module.exports = sessionMiddleware;

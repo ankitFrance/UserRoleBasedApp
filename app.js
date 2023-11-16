@@ -8,12 +8,39 @@ const sessionMiddleware = require('./models/server.model');
 //const flash = require('express-flash')
 const flash = require('connect-flash');
 const passportSetup = require('./models/passportSetup');
+const cookieSession = require('cookie-session')
+const keys = require('./models/keys')
+const passport = require ('passport')
 
 
 
 
 //******************Initialization*************************
 const app = express()
+//******For storing cookies for Goggle Auth********/
+
+//app.use(cookieSession({                  
+   // maxAge: 24*60*60*1000,
+    //keys:[keys.session.cookieKey]
+//}))
+//*********For storing cookies for Goggle Auth*****/
+//********Fixing of error because of regenerate****//
+/*
+app.use(function(request, response, next) {
+    if (request.session && !request.session.regenerate) {
+      request.session.regenerate = (cb) => {
+        cb()
+      }
+    }
+    if (request.session && !request.session.save) {
+      request.session.save = (cb) => {
+        cb()
+      }
+    }
+    next()
+  })
+  */
+//****END Fixing of error because of regenerate*****/
 //********************Body parser*************************
 app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
 
@@ -25,13 +52,23 @@ app.use(sessionMiddleware);
 app.use(flash());
 app.set('view engine', 'ejs');  // for view folder
 
+//***********For google authentication*********
+//app.use(passport.initialize())                                  //google 
+//app.use(passport.session())                                     //google 
+//*******END For google authentication*********
+
+
+//******************END Initialization*************************
+
+//*********************FOR FLASH MESSAGES************************************
 app.use(function(req, res, next){
     res.locals.success = req.flash('success');
     res.locals.errors = req.flash('error');
     next();
 });
+//***************************END FOR FLASH MESSAGES *************************
 
-//*********************************************************
+
  // this is used to hide/show navbar links , i used the variable isLoggedIn in my navbar.ejs to hide/show links
 app.use(function(req, res, next){
     res.locals.isLoggedIn = req.session.FetchEmailForLogin 

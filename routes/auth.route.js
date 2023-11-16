@@ -14,8 +14,13 @@ router.get('/Login', (req, res, next)=>{
 });
 
 router.get('/google/redirect',passport.authenticate('google'), (req, res, next)=>{
-  res.send('your profile')   
+  res.send(req.user) 
 });
+
+
+
+
+
 
 router.get('/Register', (req, res, next)=>{
   
