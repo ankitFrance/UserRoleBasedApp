@@ -20,11 +20,12 @@ const app = express()
 //******For storing cookies for Goggle Auth********/
 
 //app.use(cookieSession({                  
-   // maxAge: 24*60*60*1000,
-    //keys:[keys.session.cookieKey]
+   //maxAge: 24*60*60*1000,
+    // keys:[keys.session.cookieKey]
 //}))
 //*********For storing cookies for Goggle Auth*****/
 //********Fixing of error because of regenerate****//
+
 /*
 app.use(function(request, response, next) {
     if (request.session && !request.session.regenerate) {
@@ -39,7 +40,7 @@ app.use(function(request, response, next) {
     }
     next()
   })
-  */
+*/
 //****END Fixing of error because of regenerate*****/
 //********************Body parser*************************
 app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
@@ -53,8 +54,8 @@ app.use(flash());
 app.set('view engine', 'ejs');  // for view folder
 
 //***********For google authentication*********
-//app.use(passport.initialize())                                  //google 
-//app.use(passport.session())                                     //google 
+app.use(passport.initialize())                                  //google 
+app.use(passport.session())                                     //google 
 //*******END For google authentication*********
 
 
@@ -81,6 +82,7 @@ app.use(function(req, res, next){
                               
     next();
   });
+  
 
 
 //************************Routing**************************

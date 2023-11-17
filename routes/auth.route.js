@@ -14,7 +14,8 @@ router.get('/Login', (req, res, next)=>{
 });
 
 router.get('/google/redirect',passport.authenticate('google'), (req, res, next)=>{
-  res.send(req.user) 
+  res.redirect('/user/ProfileG') 
+ //res.send(req.user)
 });
 
 
@@ -159,7 +160,8 @@ router.post('/Register', (req, res, next)=>{
 
 
 router.get('/Logout', async(req, res, next)=>{
-    
+  
+   
   req.session.destroy(err => {
     if (err) {
       console.error(err);
