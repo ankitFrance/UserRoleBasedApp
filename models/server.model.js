@@ -8,7 +8,7 @@ const sessionMiddleware = session({
   secret: 'iamkey',
   resave: false,
   saveUninitialized: true,
-  name: 'ankit session',
+  name: 'my session',
   store: storeSession ,  // coming from sessionTOdatabase.model
   
 });

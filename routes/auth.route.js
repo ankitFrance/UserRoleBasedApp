@@ -5,29 +5,29 @@ const bcrypt = require('bcrypt');
 const {roles} =  require('../models/constants'); 
 const passport = require ('passport');
 
+
 router.get('/google', passport.authenticate('google',{
     scope: ['profile']
 }))
 
 router.get('/Login', (req, res, next)=>{
-    res.render('login')   // file name login.ejs  is written as login (render is for file)
+    res.render('login')   
 });
 
 router.get('/google/redirect',passport.authenticate('google'), (req, res, next)=>{
   res.redirect('/user/ProfileG') 
- //res.send(req.user)
+ 
 });
-
-
-
 
 
 
 router.get('/Register', (req, res, next)=>{
   
-    res.render('register'); // file name register.ejs  is written as register (render is for file)
+    res.render('register'); 
     
 });
+
+
 
 router.post('/Login', (req, res, next)=>{
     
@@ -160,15 +160,23 @@ router.post('/Register', (req, res, next)=>{
 
 
 router.get('/Logout', async(req, res, next)=>{
+
+  req.logout((err) => {
+    if (err) {
+        return next(err);
+    }
+    // Perform any additional actions before redirecting or responding to the client
+    res.redirect('/');
+});
   
-   
+  /* 
   req.session.destroy(err => {
     if (err) {
       console.error(err);
     }
     res.redirect('/');
   });
-    
+  */  
 });
 
 module.exports = router;

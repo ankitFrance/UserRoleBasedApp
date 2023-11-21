@@ -5,7 +5,6 @@ const mongoose  = require('mongoose')
 require ('dotenv').config()
 const bodyParser = require('body-parser')
 const sessionMiddleware = require('./models/server.model');
-//const flash = require('express-flash')
 const flash = require('connect-flash');
 const passportSetup = require('./models/passportSetup');
 const cookieSession = require('cookie-session')
@@ -20,8 +19,8 @@ const app = express()
 //******For storing cookies for Goggle Auth********/
 
 //app.use(cookieSession({                  
-   //maxAge: 24*60*60*1000,
-    // keys:[keys.session.cookieKey]
+  // maxAge: 24*60*60*1000,
+   // keys:[keys.session.cookieKey]
 //}))
 //*********For storing cookies for Goggle Auth*****/
 //********Fixing of error because of regenerate****//
@@ -70,20 +69,30 @@ app.use(function(req, res, next){
 //***************************END FOR FLASH MESSAGES *************************
 
 
- // this is used to hide/show navbar links , i used the variable isLoggedIn in my navbar.ejs to hide/show links
-app.use(function(req, res, next){
-    res.locals.isLoggedIn = req.session.FetchEmailForLogin 
-                              // this "session.FetchEmailForLogin" holds if i am logged in or not, see in auth.route.js about this variable
-    next();
-  });
+ // TO SHOW / HIDE NAVBAR LINKS
+ app.use(function(req, res, next){
+  res.locals.isLoggedIn = req.session.FetchEmailForLogin 
+  next();
+});
+
 
 app.use(function(req, res, next){
-    res.locals.isAuthWithAdminstrator = req.session.isAuthWithAdmin
-                              
-    next();
+ res.locals.isAuthWithAdminstrator = req.session.isAuthWithAdmin
+ next();
+});
+
+
+app.use(function(req, res, next){
+  res.locals.GoogleUser = req.session.ISGOOGLEUSER
+  next();
   });
+ // TO SHOW / HIDE NAVBAR LINKS END
+
+
+
+
   
-
+ 
 
 //************************Routing**************************
 app.use('/', require('./routes/index.route'))

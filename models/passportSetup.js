@@ -5,11 +5,11 @@ const User = require('./user.model')
 
 
 passport.serializeUser((user, done)=>{
-    done(null, user.id)
+    done(null, user._id)
 })
 
-passport.deserializeUser((id, done)=>{
-    User.findById(id).then((user)=>{
+passport.deserializeUser((_id, done)=>{
+    User.findById(_id).then((user)=>{
         done(null, user)
     });
    
@@ -26,6 +26,7 @@ passport.use(new GoogleStrategy({
     User.findOne({googleID: profile.id}).then((currentUser)=>{
         if(currentUser){
             console.log('user already exist')
+            
             done (null, currentUser);
         }
         else {

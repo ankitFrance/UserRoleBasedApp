@@ -1,5 +1,3 @@
-
-
 const router = require('express').Router();
 
 
@@ -14,14 +12,17 @@ const isAuth = (req, res, next)=>{
     }
     } else {
     res.redirect('/auth/Login');
-    }
-}
+    }}
+
+
 
 router.get('/Profile', isAuth ,  (req, res, next)=>{
       const userData = req.session.FetchEmailForLogin;
       console.log(req.sessionID)
       res.render('profile', {userData})
-  });
+});
+
+
 
 
 const isAuthGoogle =  (req, res, next)=>{
@@ -29,16 +30,20 @@ const isAuthGoogle =  (req, res, next)=>{
       res.redirect('/auth/Login');
     } 
     else{
-      
+    
       next()
-    }
-}
+}}
+
+
 
 
 router.get('/ProfileG', isAuthGoogle,  (req, res, next)=>{
     //res.send('hi'+ req.user.googleID)
+    req.session.ISGOOGLEUSER = true;
     const GoogleUser = req.user;
-   res.render('googleProfile', {GoogleUser})
-});
+    res.render('googleProfile', {GoogleUser});
+  });
+
+
 
 module.exports = router;

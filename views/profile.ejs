@@ -1,15 +1,63 @@
 <%- include('./layouts/header') %>
 
 
-<button onclick="window.history.back()" type="submit" class="btn btn-primary">Back</button>
 
 <% if (userData) { %>   <!-- user is coming from auth.route.js file -->
+<div class="container">
+<div class="row">
+    <div class="col-md-9"></div>
+<div class="ClientDetails col-md-3">
+    <p>Hello,  <%= userData.email %></p>
     <p>User ID: <%= userData._id %></p> 
-    <p>Email: <%= userData.email %></p>
-    <p>Role: <%= userData.role %></p>
     
+    <p>Role: <%= userData.role %></p>
+</div>  
+
+
+<div class="container cards">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="/orange.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="/orange.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img src="/orange.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    </div>
+</div>
 <% } else { %>
     <p>User not found.</p>
 <% } %>
+
 
 <%- include('./layouts/footer') %>

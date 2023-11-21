@@ -3,6 +3,11 @@
 
 <p> Hi your google ID is  <%= GoogleUser.googleID %></p>
 <p> Hi your google username is  <%= GoogleUser.googleUsername %></p>
+
     
+
+<form action="/auth/Logout" >
+    <button type="submit">Logout</button>
+  </form>
 
 <%- include('./layouts/footer') %>
