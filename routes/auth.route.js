@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const session = require('express-session');
+const LastLogin = require('../models/lastLogin')
 const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
 const {roles} =  require('../models/constants'); 
 const passport = require ('passport');
+
 
 
 router.get('/google', passport.authenticate('google',{
@@ -44,14 +46,32 @@ router.post('/Login', (req, res, next)=>{
                const passwordMatch = await bcrypt.compare(password_field1, FetchEmailForLogin.password_field1);
               
                if (passwordMatch){
-                //console.log('login sucessful ')
-                
+              //---------------------TO SAVE LAST LOGIN FROM SESSION TO NEW DATABASE LOGININFO--------------------------------------//
+
+                const existingLastLogin = await LastLogin.findOne({ email: FetchEmailForLogin.email_field });
+
+                if (existingLastLogin) {
+                  // Update the existing record instead of creating a new one
+                  existingLastLogin.lastLogin = new Date();
+                  await existingLastLogin.save();
+                } else {
+                  // Create a new record only if it doesn't already exist
+                  FetchEmailForLogin.lastLogin = new Date();
+                  const lastlogin = new LastLogin({
+                   
+                    lastLogin: FetchEmailForLogin.lastLogin,
+                    email: FetchEmailForLogin.email_field
+                  });
+                  await lastlogin.save();
+                }
+                //---------------------TO SAVE LAST LOGIN FROM SESSION TO NEW DATABASE LOGININFO--------------------------------------//
                 req.session.isAuth = true;
                 
                 req.session.FetchEmailForLogin = {     //req.session is an object used to store session info part of express-session middleware
                   _id: FetchEmailForLogin._id,
                   email: FetchEmailForLogin.email_field,
-                  role: FetchEmailForLogin.role
+                  role: FetchEmailForLogin.role,
+                  lastLogin: FetchEmailForLogin.lastLogin
                   // Add any other user details you want to store
                 };
                 //0000000000000000000000000000000000000000000000000000000000000000000
@@ -95,7 +115,8 @@ router.post('/Register', (req, res, next)=>{
     const email_field = req.body.email_field    // these are names in register.ejs
     const password_field1 = req.body.password_field1  // these are names in register.ejs
     const password_field2 = req.body.password_field2  // these are names in register.ejs
-  //
+
+
     async function saveData() {
         try {
                //***********************CHECK IF EMAIL ALREADY EXIST/*************************************** */
@@ -128,7 +149,8 @@ router.post('/Register', (req, res, next)=>{
                const user = new User({
                 email_field,        // this is coming from user.model.js 
                 password_field1,    // this is coming from user.model.js 
-                roles 
+                roles
+                
                    
                 
                 });

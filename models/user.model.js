@@ -2,6 +2,7 @@ const mongoose  = require('mongoose');
 const bcrypt = require('bcrypt');
 const schema = mongoose.Schema;
 const {roles} =  require('./constants');   // for making admin
+const LastLogin = require('../models/lastLogin')
 
 let userSchema = new schema({
     email_field : {
@@ -24,8 +25,8 @@ let userSchema = new schema({
 
     googleUsername : {
         type : String
-    },
-    
+    }
+   
 });
 //*******************************************BCRYPT***********************************
 
