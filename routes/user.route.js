@@ -1,49 +1,58 @@
 const router = require('express').Router();
 
 
-const isAuth = (req, res, next)=>{
-  if (req.session.isAuth){
-     if (req.session.isAuthWithAdmin) {
-      // Both conditions are true, redirect to the manageUsers page
+
+
+const renderGoogleProfile = (req, res, next, user) => {
+  req.session.ISGOOGLEUSER = true;
+  const GoogleUser = req.user;
+  res.render('profile', { GoogleUser });
+  //next(); // Call next to pass control to the next middleware
+ 
+};
+
+
+
+const renderNormalprofile = (req, res, next) => {
+  const userData = req.session.FetchEmailForLogin;
+  console.log(req.sessionID);
+  res.render('profile', { userData });
+  
+};
+
+
+
+
+const isAuthGoogle = (req, res, next) => {
+  if (req.user) {
+    
+    renderGoogleProfile(req, res, next, req.user);
+  } else {
+
+   req.session.ISGOOGLEUSER = false; 
+    next(); // Call next to pass control to the next middleware
+    
+  }
+
+};
+
+
+
+const isAuth = (req, res, next) => {
+  if (req.session.isAuth) {
+    if (req.session.isAuthWithAdmin) {
       res.redirect('/admin/AllUsers');
     } else {
-      // Only isAuth is true, redirect to the profile page
-      next();
+      renderNormalprofile(req, res, next);
     }
-    } else {
+  } else {
     res.redirect('/auth/Login');
-    }}
+  }
+};
 
+router.get('/Profile', isAuthGoogle, isAuth);
 
-
-router.get('/Profile', isAuth ,  (req, res, next)=>{
-      const userData = req.session.FetchEmailForLogin;
-      console.log(req.sessionID)
-      res.render('profile', {userData})
-});
-
-
-
-
-const isAuthGoogle =  (req, res, next)=>{
-    if (!req.user){
-      res.redirect('/auth/Login');
-    } 
-    else{
-    
-      next()
-}}
-
-
-
-
-router.get('/ProfileG', isAuthGoogle,  (req, res, next)=>{
-    //res.send('hi'+ req.user.googleID)
-    req.session.ISGOOGLEUSER = true;
-    const GoogleUser = req.user;
-    res.render('googleProfile', {GoogleUser});
-  });
-
+/*********************************************************************** */
 
 
 module.exports = router;

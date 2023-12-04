@@ -1,18 +1,15 @@
 <%- include('./layouts/header') %>
 
-
-
-<% if (userData) { %>   <!-- user is coming from auth.route.js file -->
+<!----------------------------------------------------------------------------------------->
 <div class="container">
-<div class="row">
-    <div class="col-md-9"></div>
-<div class="ClientDetails col-md-3">
-    <p>Hello,  <%= userData.email %></p>
-    <p>User ID: <%= userData._id %></p> 
-    
-    <p>Role: <%= userData.role %></p>
-</div>  
-
+    <% if (GoogleUser) { %>
+      <h2>Welcome, <%= GoogleUser.googleUsername %></h2>
+    <% } else { %>
+      <h2>Welcome, <%= userData.email %></h2>
+    <% } %>
+    <!-- Other profile content here -->
+  </div>
+<!----------------------------------------------------------------------------------------->
 
 <div class="container cards">
     <div class="row">
@@ -55,9 +52,8 @@
 
     </div>
 </div>
-<% } else { %>
-    <p>User not found.</p>
-<% } %>
+<!---------------------------------------------------->
 
+<!---------------------------------------------------->
 
 <%- include('./layouts/footer') %>

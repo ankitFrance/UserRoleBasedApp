@@ -7,6 +7,11 @@ const {roles} =  require('../models/constants');
 const passport = require ('passport');
 
 
+router.get('/orcid', (req, res, next)=>{
+  res.send('orcid ')
+})
+
+
 
 router.get('/google', passport.authenticate('google',{
     scope: ['profile']
@@ -17,7 +22,7 @@ router.get('/Login', (req, res, next)=>{
 });
 
 router.get('/google/redirect',passport.authenticate('google'), (req, res, next)=>{
-  res.redirect('/user/ProfileG') 
+  res.redirect('/user/Profile') 
  
 });
 
@@ -28,6 +33,9 @@ router.get('/Register', (req, res, next)=>{
     res.render('register'); 
     
 });
+
+
+
 
 
 
@@ -60,11 +68,21 @@ router.post('/Login', (req, res, next)=>{
                   const lastlogin = new LastLogin({
                    
                     lastLogin: FetchEmailForLogin.lastLogin,
-                    email: FetchEmailForLogin.email_field
+                    email: FetchEmailForLogin.email_field,
+                    role: FetchEmailForLogin.role,
+                    _id: FetchEmailForLogin._id,
+                   
+                  
+
                   });
                   await lastlogin.save();
                 }
-                //---------------------TO SAVE LAST LOGIN FROM SESSION TO NEW DATABASE LOGININFO--------------------------------------//
+
+                
+
+                
+
+                //---------------------END OF TO SAVE LAST LOGIN FROM SESSION TO NEW DATABASE LOGININFO--------------------------------------//
                 req.session.isAuth = true;
                 
                 req.session.FetchEmailForLogin = {     //req.session is an object used to store session info part of express-session middleware
@@ -72,7 +90,7 @@ router.post('/Login', (req, res, next)=>{
                   email: FetchEmailForLogin.email_field,
                   role: FetchEmailForLogin.role,
                   lastLogin: FetchEmailForLogin.lastLogin
-                  // Add any other user details you want to store
+                  
                 };
                 //0000000000000000000000000000000000000000000000000000000000000000000
 
@@ -82,7 +100,7 @@ router.post('/Login', (req, res, next)=>{
 
                 //0000000000000000000000000000000000000000000000000000000000000000000
                 return res.redirect('/user/Profile');
-                //return res.render('profile', {IDuser: FetchEmailForLogin._id});
+                
                }
 
                else {
@@ -107,6 +125,14 @@ router.post('/Login', (req, res, next)=>{
    LoginData()
    
 });
+
+
+
+
+
+
+
+
 
 router.post('/Register', (req, res, next)=>{
    

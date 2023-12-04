@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {roles} =  require('./constants'); 
 
 const loginInfoSchema = new Schema({
   
@@ -8,10 +9,20 @@ const loginInfoSchema = new Schema({
 
     },
     email: {
-        type: String
+        type: String,
+       
    
-       }
+      }, 
 
+      role : {
+        type : String,
+        enum : [roles.admin, roles.moderator, roles.client],
+        default : roles.client,
+    },
+
+      
+
+   
 });
 
 
