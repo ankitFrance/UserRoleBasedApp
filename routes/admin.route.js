@@ -10,37 +10,23 @@ const isAdmin = (req, res, next)=>{
     else {
       req.flash('error', 'Not Authorized');
       res.redirect('/');
-      
-    }
-    }
+}}
+
+
 
 router.get('/AllUsers',isAdmin,  async(req, res, next)=>{
 
  
     try {
-
-      
-        const Allusers = await User.find()
+       const Allusers = await User.find()
         const LoggedInUsers = await LastLogin.find()
-       
-        
-        
-        //res.send(Allusers)
         res.render('manageUsers', {Allusers, LoggedInUsers})
-      
-        
-    } catch (error) {
+
+   } catch (error) {
         console.log(" users not found ")
         next()
     }
-  
-  });
+});
 
 
-
-
-
-
-
-
-  module.exports = router;
+module.exports = router;

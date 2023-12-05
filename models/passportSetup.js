@@ -26,6 +26,7 @@ passport.use(new GoogleStrategy({
     User.findOne({googleID: profile.id}).then((currentUser)=>{
         if(currentUser){
             console.log('user already exist')
+            console.log(profile);
             
             done (null, currentUser);
         }

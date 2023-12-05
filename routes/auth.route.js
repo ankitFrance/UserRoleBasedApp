@@ -47,6 +47,7 @@ router.post('/Login', (req, res, next)=>{
 
    async function LoginData(){
     const FetchEmailForLogin = await User.findOne({email_field});
+    //console.log(FetchEmailForLogin)
     
     try {
       
@@ -145,6 +146,11 @@ router.post('/Register', (req, res, next)=>{
 
     async function saveData() {
         try {
+
+                if (!email_field) {
+                req.flash('error', 'Email cannot be blank');
+                return res.redirect('/auth/Register');
+                }
                //***********************CHECK IF EMAIL ALREADY EXIST/*************************************** */
 
                const doesExist = await User.findOne({email_field});
@@ -167,6 +173,16 @@ router.post('/Register', (req, res, next)=>{
                  console.log('password and confirm passwords do not match') 
                  return
                } 
+
+              else if (!password_field1 || !password_field2) {
+                req.flash('error', 'Password cannot be blank');
+                return res.redirect('/auth/Register');
+               }
+
+               else if (password_field1.length < 8) {
+                req.flash('error', 'Password must be at least 8 characters long');
+                return res.redirect('/auth/Register');
+                }
 
                else {
                  console.log('Password and Confirm Password matches.');
