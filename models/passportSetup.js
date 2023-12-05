@@ -1,6 +1,7 @@
 const passport = require ('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./keys')
+const LastLogin = require('./lastLogin')
 const User = require('./user.model')
 
 
@@ -9,7 +10,7 @@ passport.serializeUser((user, done)=>{
 })
 
 passport.deserializeUser((_id, done)=>{
-    User.findById(_id).then((user)=>{
+    LastLogin.findById(_id).then((user)=>{
         done(null, user)
     });
    
@@ -23,20 +24,29 @@ passport.use(new GoogleStrategy({
   
 },(accessToken, refreshToken, profile, done)=>{
 
-    User.findOne({googleID: profile.id}).then((currentUser)=>{
+    LastLogin.findOne({googleID: profile.id}).then((currentUser)=>{
         if(currentUser){
             console.log('user already exist')
-            console.log(profile);
-            
-            done (null, currentUser);
+            //************************************** */
+            currentUser.lastLogin = Date.now();
+            currentUser.save().then(updatedUser => {
+                console.log('User lastLogin updated:', updatedUser.lastLogin);
+                done(null, updatedUser);
+            });
+
+
+
+            //************************************* */
+            //done (null, updatedUser);
         }
         else {
                  //passport call back function
             console.log('passport callback function fired')
             console.log(profile);
-            new User({
+            new LastLogin({
             googleID: profile.id,
-            googleUsername : profile.displayName
+            googleUsername : profile.displayName,
+            lastLogin: Date.now(), // Set the initial lastLogin value
            }).save().then((newUser)=>{
             console.log('new user created', newUser)
             done (null, newUser)

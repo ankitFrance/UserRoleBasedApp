@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 const router = require('express').Router();
 const session = require('express-session');
 const LastLogin = require('../models/lastLogin')
@@ -56,7 +63,7 @@ router.post('/Login', (req, res, next)=>{
               
                if (passwordMatch){
               //---------------------TO SAVE LAST LOGIN FROM SESSION TO NEW DATABASE LOGININFO--------------------------------------//
-
+             
                 const existingLastLogin = await LastLogin.findOne({ email: FetchEmailForLogin.email_field });
 
                 if (existingLastLogin) {
@@ -66,6 +73,7 @@ router.post('/Login', (req, res, next)=>{
                 } else {
                   // Create a new record only if it doesn't already exist
                   FetchEmailForLogin.lastLogin = new Date();
+                 
                   const lastlogin = new LastLogin({
                    
                     lastLogin: FetchEmailForLogin.lastLogin,
@@ -253,3 +261,14 @@ module.exports = router;
 The await keyword is used to wait for the asynchronous operation to complete. In this case, user.save() is likely a database operation that returns a promise. The await ensures that the function pauses and waits for this promise to resolve before proceeding.
 Once the user.save() operation is complete, and the result is stored in savedData, it sends the saved data as a response. 
 */
+
+
+
+
+
+
+
+
+
+
+

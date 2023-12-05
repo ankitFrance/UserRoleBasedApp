@@ -19,7 +19,13 @@ const loginInfoSchema = new Schema({
         enum : [roles.admin, roles.moderator, roles.client],
         default : roles.client,
     },
+    googleID : {
+      type : String
+  }, 
 
+  googleUsername : {
+      type : String
+  }
       
 
    

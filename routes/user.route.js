@@ -24,7 +24,7 @@ const renderNormalprofile = (req, res, next) => {
 
 
 const isAuthGoogle = (req, res, next) => {
-  if (req.user) {     // req.user coming from passportSetup.js
+  if (req.user) {
     
     renderGoogleProfile(req, res, next, req.user);
   } else {
@@ -50,7 +50,39 @@ const isAuth = (req, res, next) => {
   }
 };
 
-
-
 router.get('/Profile', isAuthGoogle, isAuth);
+
+/*********************************************************************** */
+
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
