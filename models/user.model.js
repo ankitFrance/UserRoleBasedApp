@@ -4,6 +4,7 @@ const schema = mongoose.Schema;
 const {roles} =  require('./constants');   // for making admin
 
 
+
 let userSchema = new schema({
     email_field : {
         type : String
@@ -19,13 +20,17 @@ let userSchema = new schema({
         default : roles.client,
     },
 
-    googleID : {
-        type : String
-    }, 
+     is_verified: {
+        type: Boolean,
+        default: false, 
+    },
 
-    googleUsername : {
-        type : String
+    verificationToken:{
+        type: String, 
+        default: '', 
     }
+
+  
    
 });
 //*******************************************BCRYPT***********************************
@@ -52,10 +57,6 @@ userSchema.pre('save', async function (next){  //This code is a middleware funct
 
 
 module.exports = mongoose.model('utilisateurs', userSchema)
-
-
-
-
 
 
 

@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 const router = require('express').Router();
 const session = require('express-session');
 const LastLogin = require('../models/lastLogin')
@@ -12,6 +5,9 @@ const User = require('../models/user.model')
 const bcrypt = require('bcrypt');
 const {roles} =  require('../models/constants'); 
 const passport = require ('passport');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { sendVerificationEmail } = require('../models/emailsender');
 
 
 router.get('/orcid', (req, res, next)=>{
@@ -194,12 +190,18 @@ router.post('/Register', (req, res, next)=>{
 
                else {
                  console.log('Password and Confirm Password matches.');
+
+                 //*********************************************************************************** */
+                 const verificationToken = crypto.randomBytes(20).toString('hex');
+
+                 //********************************************************* ***************************/
                // SO allowing user to register his credentials in database
                // Create an instance 'user' of the model 'User' that we imported in this file with the form data
                const user = new User({
                 email_field,        // this is coming from user.model.js 
                 password_field1,    // this is coming from user.model.js 
-                roles
+                roles,
+                verificationToken
                 
                    
                 
@@ -207,6 +209,11 @@ router.post('/Register', (req, res, next)=>{
  
                // Save the instance to the database
                 const savedData = await user.save();
+                //***********************************REGISTER EMAIL GMAIL VERIFICATION **************************************************** */
+              
+                 await sendVerificationEmail(email_field, verificationToken);  //emailsender.js
+
+                 //***********************************END REGISTER EMAIL GMAIL VERIFICATION******************************************************* */
                 req.flash('success', 'You have been registered');
                 //res.send(savedData)   // sending json mongodb to other page after register
                 console.log('Data saved successfully:', savedData);
@@ -251,6 +258,35 @@ router.get('/Logout', async(req, res, next)=>{
   */  
 });
 
+
+
+
+router.get('/verify', async (req, res) => {
+  const token = req.query.token;
+
+  try {
+      const userForVerify = await User.findOne({ verificationToken: token });
+
+      if (!userForVerify) {
+          req.flash('error', 'Invalid verification token');
+          return res.redirect('/auth/Register');
+      }
+
+      userForVerify.is_verified = true;
+      userForVerify.verificationToken = null;
+      await userForVerify.save();
+
+      req.flash('success', 'Email verified successfully');
+      res.redirect('/auth/Login'); 
+  } catch (error) {
+      console.error('Error verifying email:', error);
+      req.flash('error', 'Error verifying email');
+      res.redirect('/auth/Register');
+  }
+});
+
+
+
 module.exports = router;
 
 
@@ -261,14 +297,3 @@ module.exports = router;
 The await keyword is used to wait for the asynchronous operation to complete. In this case, user.save() is likely a database operation that returns a promise. The await ensures that the function pauses and waits for this promise to resolve before proceeding.
 Once the user.save() operation is complete, and the result is stored in savedData, it sends the saved data as a response. 
 */
-
-
-
-
-
-
-
-
-
-
-
