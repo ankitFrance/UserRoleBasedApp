@@ -8,6 +8,7 @@ const passport = require ('passport');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { sendVerificationEmail } = require('../models/emailsender');
+const { sendResetPasswordLink } = require('../models/emailsender');
 
 
 router.get('/orcid', (req, res, next)=>{
@@ -284,6 +285,118 @@ router.get('/verify', async (req, res) => {
       res.redirect('/auth/Register');
   }
 });
+
+
+
+
+
+router.get('/Forgot', async (req, res) => {
+  try {
+      res.render("forgotPass")
+  } catch (error) {
+     console.log(error)
+  }
+});
+
+
+
+
+router.post('/Forgot', async (req, res) => {
+ 
+  const email_forgot_field = req.body.email_forgot_field;
+
+  try {
+    const userForgotexist = await User.findOne({ email_field: email_forgot_field });
+
+    if (userForgotexist) {
+      console.log(' your user exist')
+      const verificationTokenForResetPass = crypto.randomBytes(20).toString('hex');
+      await sendResetPasswordLink(email_forgot_field, verificationTokenForResetPass); 
+
+       // Update the user's resetPassToken field in the database
+       userForgotexist.resetPassToken = verificationTokenForResetPass;
+       await userForgotexist.save();
+
+      req.flash('success', 'Link has been sent ');
+      res.redirect('/auth/Forgot');
+    } else {
+      // User not found
+      res.send('userNotFound');
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+  
+});
+
+
+
+router.get('/reset', async (req, res) => {
+  const token = req.query.token;
+  const email = req.query.email;
+  
+  
+
+  try {
+      const userForReset = await User.findOne({ resetPassToken: token });
+
+      if (!userForReset) {
+          req.flash('error', 'Invalid reset token');
+          return res.redirect('/auth/Register');
+      }
+
+      
+
+     // req.flash('success', 'now you can reset your password');
+      res.render('reset', { token , email}); 
+  } catch (error) {
+      console.error('Error :', error);
+      req.flash('error', 'Error in findinguser');
+      res.redirect('/auth/Register');
+  }
+});
+
+
+
+
+
+router.post('/reset', async (req, res) => {
+  const token = req.body.token; // Change here
+  const email = req.body.email;
+  console.log('Received token:', token); 
+  const newPassword = req.body.password_reset;
+  
+
+  try {
+    const user = await User.findOne({ resetPassToken: token,  email_field: email });
+
+    if (!user) {
+      req.flash('error', 'Invalid reset token or email');
+      return res.redirect('/auth/Register');
+    }
+
+    // Update the user's password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password_field1 = hashedPassword;
+
+    // Clear the reset token
+    user.resetPassToken = '';
+
+    // Save the updated user
+    await user.save();
+
+    req.flash('success', 'Password reset successful');
+    return res.redirect('/auth/Login');
+  } catch (error) {
+    console.error('Error:', error);
+    req.flash('error', 'Error resetting password');
+    res.redirect('/auth/Register');
+  }
+});
+
+
 
 
 

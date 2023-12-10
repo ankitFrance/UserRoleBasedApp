@@ -28,7 +28,11 @@ let userSchema = new schema({
     verificationToken:{
         type: String, 
         default: '', 
-    }
+    }, 
+    resetPassToken: {
+        type: String,
+        default: '',
+    },
 
   
    

@@ -1,0 +1,12 @@
+<form action="/auth/reset" method="post" class="login-form">
+    <input type="hidden" name="token" value="<%= token %>">
+    <input type="hidden" name="email" value="<%= email %>">
+      <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password_reset" name="password_reset">
+  
+         
+        
+          <button type="submit" class="btn btn-primary custom-btn">Submit</button>
+        </div>
+      </form>
