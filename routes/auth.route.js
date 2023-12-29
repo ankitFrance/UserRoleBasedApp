@@ -59,6 +59,12 @@ router.post('/Login', (req, res, next)=>{
                const passwordMatch = await bcrypt.compare(password_field1, FetchEmailForLogin.password_field1);
               
                if (passwordMatch){
+
+                if (!FetchEmailForLogin.is_verified) {
+                  console.log('please verify your email first');
+                  req.flash('error', 'Please verify your email first');
+                  return res.redirect('/auth/Login');
+                 }
               //---------------------TO SAVE LAST LOGIN FROM SESSION TO NEW DATABASE LOGININFO--------------------------------------//
              
                 const existingLastLogin = await LastLogin.findOne({ email: FetchEmailForLogin.email_field });
@@ -215,7 +221,7 @@ router.post('/Register', (req, res, next)=>{
                  await sendVerificationEmail(email_field, verificationToken);  //emailsender.js
 
                  //***********************************END REGISTER EMAIL GMAIL VERIFICATION******************************************************* */
-                req.flash('success', 'You have been registered');
+                req.flash('success', 'You have been registered, Please verify your email');
                 //res.send(savedData)   // sending json mongodb to other page after register
                 console.log('Data saved successfully:', savedData);
                 
@@ -362,7 +368,7 @@ router.get('/reset', async (req, res) => {
 
 
 router.post('/reset', async (req, res) => {
-  const token = req.body.token; // Change here
+  const token = req.body.token; 
   const email = req.body.email;
   console.log('Received token:', token); 
   const newPassword = req.body.password_reset;

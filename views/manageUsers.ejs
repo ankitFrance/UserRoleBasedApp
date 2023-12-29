@@ -2,6 +2,25 @@
 <!-------------------------------------------------------------------------------------->
 <!-------------------------------------------------------------------------------------->
 <!-------------------------------------------------------------------------------------->
+<% if (locals.errors && locals.errors.length > 0) { %>
+  <div class="alert alert-danger">
+
+      <% locals.errors.forEach(function(error) { %>
+        <span><%= error %></span>
+      <% }); %>
+
+  </div>
+<% } %>
+
+<% if (locals.success && locals.success.length > 0) { %>
+  <div class="alert alert-success">
+  
+      <% locals.success.forEach(function(success) { %>
+        <span><%= success %></span>
+      <% }); %>
+ 
+  </div>
+<% } %>
 
 
 
@@ -24,8 +43,18 @@
        <tr>
       
         <td><%= element._id %></td>
-        <td><%= element.email_field%></td>
-        <td><%= element.role %></td>
+        <td><%= element.email_field%></td>   
+        <td>
+          <form action="/admin/Allusers/updateRole" method="post">
+              <input type="hidden" name="id" value="<%= element._id %>">
+              <select name="role" id="role">
+                <option value="ADMIN" <%= element.role === 'ADMIN' ? 'selected' : '' %>>Admin</option>
+                <option value="MODERATOR" <%= element.role === 'MODERATOR' ? 'selected' : '' %>>Moderator</option>
+                <option value="CLIENT" <%= element.role === 'CLIENT' ? 'selected' : '' %>>Client</option>
+              </select>
+              <input type="submit" value="Update">
+          </form>
+        </td>
        
 
         
@@ -36,10 +65,9 @@
         
 
           <!-- See Profile button -->
-          <button type="button" class="btn btn-warning" onclick="SeeprofileUser('<%= element._id %>')">View Profile</button>
+          <button type="button" class="btn btn-warning" onclick="window.location.href='/admin/Allusers/<%= element._id %>'" >View Profile</button>
 
-          <!-- Update button -->
-          <button type="button" class="btn btn-primary" onclick="updateUser('<%= element._id %>')">Update</button>
+         
           
           <!-- Delete button -->
           <button type="button" class="btn btn-danger" onclick="deleteUser('<%= element._id %>')">Delete</button>
@@ -51,6 +79,13 @@
     </tbody>
   </table>
   </div>
+
+
+
+
+
+
+
 
   <!---------------------------------------------------------------------------------->
   <div class="container">
